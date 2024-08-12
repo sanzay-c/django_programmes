@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block start %}
+
+<div class="container mt-5">
+
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Add Books</h2>
+        <hr>
+        <div class="form-group">
+            <label for="exampleInputEmail1">title</label>
+            <input type="text" name="title" value="{{book.title}}" required class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Author</label>
+            <input type="text" name="author" value="{{book.author}}" required class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Price</label>
+            <input type="text" name="price" value="{{book.price}}" required class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update books</button>
+    </form>
+</div>
+
+
+{% endblock %}
