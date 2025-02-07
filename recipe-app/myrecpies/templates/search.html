@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}
+Search{{search}}
+{% endblock title %}
+{% block start %}
+
+
+<style>
+
+  .btn-outline-custom {
+    color: #FE724C;
+
+    border: 2px solid #FE724C;
+
+    background-color: transparent;
+
+    transition: all 0.3s ease;
+
+  }
+
+  .btn-outline-custom:hover {
+    color: white;
+    
+    background-color: #FE724C;
+    
+    border-color: #FE724C;
+    
+  }
+
+ 
+  .btn-group a {
+    margin-bottom: 0.5rem;
+    padding: 10px 20px;
+  }
+</style>
+
+<div class="mb-3">
+  <form class="d-flex mb-3" style="padding-top:3%;padding-left: 3%;padding-right: 3%;padding-bottom: 1%;">
+    <input class="form-control me-2" type="search" placeholder="Search Receipe" aria-label="Search" name="search">
+    <button class="btn" style="color: white; background: #FE724C;" type="submit">Search</button>
+  </form>
+
+
+  <!-- Cooking Time Filter Options -->
+  <div class="row ">
+    <div class="col-12 col-md-8 mx-auto">
+      <h5 class="text-center mb-4">Filter by Cooking Time</h5>
+      <div class="btn-group d-flex justify-content-between flex-wrap">
+        <a href="?search={{ search }}&cooking_time_min=20&cooking_time_max=30"
+          class="btn btn-outline-custom mb-2 w-45">20 to 30 minutes</a>
+        <a href="?search={{ search }}&cooking_time_min=30&cooking_time_max=40"
+          class="btn btn-outline-custom mb-2 w-45">30 to 40 minutes</a>
+        <a href="?search={{ search }}&cooking_time_min=40&cooking_time_max=50"
+          class="btn btn-outline-custom mb-2 w-45">40 to 50 minutes</a>
+        <a href="?search={{ search }}&cooking_time_min=50&cooking_time_max=60"
+          class="btn btn-outline-custom mb-2 w-45">50 to 60 minutes</a>
+        <a href="?search={{ search }}&cooking_time_min=60&cooking_time_max=90"
+          class="btn btn-outline-custom mb-2 w-45">60 to 90 minutes</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- recipe category -->
+  <form class="d-flex mb-3" method="get" style="padding-top: 3%; padding-left: 3%; padding-right: 3%; padding-bottom: 1%;">
+    <!-- Dropdown -->
+    <select name="category" class="form-control me-2" style="font-size: 14px; height: 35px; padding: 5px;">
+      {% for value, label in CATEGORY_CHOICES %}
+        <option value="{{ value }}" {% if value == selected_category %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  
+    <!-- Button -->
+    <button class="btn" type="submit" style="color: white; background: #FE724C; height: 35px; padding: 0 15px; font-size: 14px; line-height: 35px; display: flex; justify-content: center; align-items: center; white-space: nowrap; overflow: hidden; border: none;">
+      Select Category
+    </button>
+    
+  </form>
+  
+  
+
+
+  </form>
+</div>
+<hr>
+{% if recipes %}
+{% include 'card.html' %}
+{% else %}
+<div class="d-flex align-items-center justify-content-center" style="height: 60vh;">
+  <div class="col-6 col-md-4">
+    <div class="card h-100 text-center" style="border-color: #FE724C; font-family: 'Segoe UI', sans-serif;">
+      <div class="card-body">
+        <h5 class="card-title" style="color: #FE724C;">OOPS!<br> NO MATCHES.</h5>
+        <p class="card-text" style="color: #FE724C;">Try some other keywords instead.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

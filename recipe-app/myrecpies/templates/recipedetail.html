@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}
+Recipe
+{% endblock title %}
+{% block start %}
+
+<!-- Boxicons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+
+<!-- View Recipes -->
+<div class="container my-4">
+
+  <!-- Recipe Title -->
+  <h2 class="mb-3 text-center" style="color: #FE724C;">{{ recipes.recipe_name }}</h2>
+
+  <!-- Recipe Meta Info -->
+  <p class="text-muted text-center">Created by: {{ recipes.user.first_name }} | Created at: {{ recipes.created_at }}</p>
+
+  <!-- recipe category | Cooking time -->
+  <p class="text-muted text-center">
+    Category: {{ recipes.get_category_display }} |
+    <strong>
+      <i class="bx bx-time"></i>
+      Cooking Time: {{ recipes.cooking_time }} minutes
+    </strong>
+    <!-- <strong>Rating: {{ recipes.average_rating }}/5</strong> -->
+  </p>
+
+  <!-- Row for Image and Description -->
+  <div class="row mb-4">
+    <!-- Recipe Image (Smaller Size) -->
+    <div class="col-md-4 d-flex justify-content-center">
+      <img src="/media/{{ recipes.recipe_image }}" class="rounded" alt="Recipe Image"
+        style="max-width: 250px; height: auto; border-radius: 10%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    </div>
+
+    <!-- Recipe Description -->
+    <div class="col-md-8">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h4 class="card-title mb-4" style="color: #FE724C; font-weight: bold;">Description</h4>
+          <hr>
+          <p class="lead text-justify" style="font-size: 16px;">{{ recipes.recipe_description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row for Ingredients and Instructions -->
+  <div class="row">
+    <!-- Ingredients Section -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h4 class="card-title text-center mb-4" style="color: #FE724C; font-weight: bold;">Ingredients</h4>
+          <hr>
+          <ul class="list-group list-group-flush">
+            {% for ingredient in ingredients %}
+            <li class="list-group-item">{{ ingredient }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions Section -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h4 class="card-title text-center mb-4" style="color: #FE724C; font-weight: bold;">Instructions</h4>
+          <hr>
+          <ol class="list-group list-group-numbered">
+            {% for instruction in instructions %}
+            <li class="list-group-item">{{ instruction }}.</li>
+            {% endfor %}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comments Section -->
+  <div class="container my-5">
+    <div class="card shadow-sm">
+      <h3 class="card-header text-white" style="background: #FE724C;">Comments</h3>
+      <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+        {% for comment in comments %}
+        <div class="mb-4">
+          <a href="/user/{{ comment.user.username }}" style="text-decoration: none; color: #FE724C; font-weight: bold;">
+            {{ comment.user.username }}
+          </a>
+          <p class="mb-1">{{ comment.content }}</p>
+          <small class="text-muted">Posted on {{ comment.created_at }}</small>
+        </div>
+        <hr>
+        {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Comment Form -->
+  <!-- Include Alertify.js CSS and JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+  <div class="container my-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4>Leave a Comment</h4>
+
+        {% csrf_token %}
+
+        {% if user.is_authenticated %}
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <textarea class="form-control" name="content" placeholder="Write your comment here (max 300 chars)"
+              maxlength="300" minlength="2" required></textarea>
+          </div>
+          <button type="submit" class="btn" style="background: #FE724C; color: white;">Post Comment</button>
+        </form>
+        {% else %}
+        <!-- This div only shows when the user is not logged in -->
+        <div class="mb-3">
+          <textarea class="form-control" name="content" placeholder="Write your comment here (max 300 chars)"
+            maxlength="300" minlength="2" required></textarea>
+        </div>
+        <!-- Button to trigger Alertify message -->
+        <button type="button" class="btn" style="background: #FE724C; color: white;" onclick="showAlertify()">Post
+          Comment</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function showAlertify() {
+      // alertify.alert('Authentication Required', 'You need to be logged in to post a comment.', function () {
+      //   // Optional: You can add a callback function when the user clicks "OK"
+      // }).set('labels', { ok: 'OK' }); // You can customize the button label
+      alertify.notify('You need to be logged in to post a comment.', 'error', 3); // 3 seconds duration
+    }
+  </script>
+
+
+</div>
+
+{% endblock %}
