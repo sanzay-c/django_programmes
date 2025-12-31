@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}
+    Create Profile
+{% endblock title %}
+{% block start %}
+<div class="container mt-3 d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <form class="col-12 col-md-6 p-3 shadow-lg" method="POST" enctype="multipart/form-data" 
+          style="background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px); border-radius: 20px; 
+                 border: 1px solid #FE724C; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+      {% csrf_token %}
+      
+      {% if messages %}
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+        <strong>{{ message }}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endif %}
+      
+      <h2 class="text-center mb-3" style="font-weight: bold; color: #FE724C;">Add Your Details</h2>
+      <hr style="color: #000;">
+      
+      <div class="mb-3">
+        <label for="bio" class="form-label">Bio</label>
+        <textarea class="form-control" name="bio" id="bio" required placeholder="Write about yourself" maxlength="200"></textarea>
+      </div>
+      
+      <div class="mb-3">
+        <label for="dob" class="form-label">Date of Birth</label>
+        <input name="dob" type="date" class="form-control" id="dob" required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="profile_pic" class="form-label">Add your Pic</label>
+        <input type="file" name="profile_pic" class="form-control" id="profile_pic">
+      </div>
+      
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn" style="background-color: #FE724C; color: white; border-radius: 8px;">Create</button>
+      </div>
+    </form>
+</div>
+{% endblock %}

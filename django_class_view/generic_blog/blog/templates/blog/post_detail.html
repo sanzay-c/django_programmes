@@ -1,0 +1,13 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p class="text-muted">Published on {{ post.created_at }}</p>
+    <!-- -----------'-'post_update'-is this the name given in url'' -->
+    <a href="{% url 'post_update' post.pk %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Delete</a>
+    <a href="{% url 'post_list' %}" class="btn btn-secondary">Back</a>
+{% endblock %}
