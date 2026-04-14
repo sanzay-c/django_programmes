@@ -204,11 +204,7 @@ def search(request):
     cooking_time_max = request.GET.get('cooking_time_max')  # Get the maximum cooking time filter
     selected_category = request.GET.get('category')  # Get the selected category from the request
 
-    # Step 1: Apply search filtering if there's a search query
-    if query:
-        queryset = linear_search(query, queryset)  # Use linear_search to filter by name (optional)
-
-    # Step 2: Apply cooking time range filter if both min and max are provided
+    # Step 1: Apply cooking time range filter if both min and max are provided
     if cooking_time_min and cooking_time_max:
         try:
             # Ensure cooking_time_min and cooking_time_max are integers
@@ -220,9 +216,13 @@ def search(request):
         except ValueError:
             queryset = queryset  # If the cooking time filters are invalid, return all results
 
-    # Step 3: Apply category filter if a category is selected
+    # Step 2: Apply category filter if a category is selected
     if selected_category:
         queryset = queryset.filter(category=selected_category)  # Filter by category
+
+    # Step 3: Apply search filtering if there's a search query
+    if query:
+        queryset = linear_search(query, queryset)  # Use linear_search to filter by name (optional)
 
     # Step 4: Sort the queryset by created_at to get most recent recipes first using Bubble Sort
     queryset = bubble_sort(queryset)  # Custom Bubble Sort function for sorting by recently added
